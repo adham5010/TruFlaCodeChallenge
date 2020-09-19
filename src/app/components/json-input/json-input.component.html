@@ -1,0 +1,15 @@
+<form [formGroup]="jsonForm" (submit)="onSubmit()">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Enter Json Object</label>
+        <textarea class="" [formControlName]="'json'"
+            [ngClass]="{'form-control':true,'invalid':jsonForm.get('json').invalid && jsonForm.get('json').touched}"></textarea>
+        <span *ngIf="jsonForm.get('json').invalid">
+            <span *ngIf="jsonForm.get('json').hasError('notJson')">enter Valid Json</span>
+            <span *ngIf="jsonForm.get('json').hasError('notSchema')">{{messageToBeDisplayed}}</span>
+        </span>
+    </div>
+    <div style="display: flex;">
+        <button type="submit" [disabled]="jsonForm.invalid" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Cancel</button>
+    </div>
+</form>
