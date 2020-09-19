@@ -1,9 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators
-} from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { CustomValidators } from "src/app/custome-validators/custom-validators";
 import { IType } from "src/app/models/IType";
 
@@ -14,10 +10,38 @@ import { IType } from "src/app/models/IType";
 })
 export class JsonInputComponent implements OnInit {
   jsonForm: FormGroup;
-  @Output() editFinished:EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() editFinished: EventEmitter<any[]> = new EventEmitter<any[]>();
   readonly stringForInvaLidSchema =
     "the elments at index {indexes} are invalid";
   messageToBeDisplayed = "";
+  defaultData = `[
+    { "type": "label", "value": "sayed" },
+    { "type": "text" },
+    {
+      "type": "dropdown",
+      "items": [
+        { "text": "sample 1", "value": "sample1" },
+        { "text": "sample 2", "value": "sample2" },
+        { "text": "sample 3", "value": "sample3" },
+        { "text": "sample 4", "value": "sample4" },
+        { "text": "sample 5", "value": "sample5" }
+      ]
+    },
+    {
+      "type": "radiobutton",
+      "items": [
+        { "text": "sample 1", "value": "sample1" },
+        { "text": "sample 2", "value": "sample2" },
+        { "text": "sample 3", "value": "sample3" },
+        { "text": "sample 4", "value": "sample4" },
+        { "text": "sample 5", "value": "sample5" }
+      ]
+    },
+    { "type": "checkbox", "label": "check 1" },
+    { "type": "submit", "value": "Save" },
+    { "type": "cancle", "value": "Cancle" }
+  ]
+  `;
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -44,8 +68,10 @@ export class JsonInputComponent implements OnInit {
           }
           this.jsonForm.get("json").setErrors({ notSchema: true });
         }
-        
       }
+    });
+    this.jsonForm.patchValue({
+      json: this.defaultData
     });
   }
 
