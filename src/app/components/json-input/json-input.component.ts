@@ -42,7 +42,7 @@ export class JsonInputComponent implements OnInit {
     { "type": "cancle", "value": "Cancle" }
   ]
   `;
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.jsonForm = this.fb.group({
@@ -51,7 +51,8 @@ export class JsonInputComponent implements OnInit {
     this.jsonForm.valueChanges.subscribe(() => {
       const invalidValues = [];
       if (!this.jsonForm.get("json").invalid) {
-        const data = JSON.parse(this.jsonForm.get("json").value);
+        let data;
+         try {data = JSON.parse(this.jsonForm.get("json").value)}catch{ data = {}};
         const parsedData = data as IType[];
         if (parsedData && parsedData.filter(a => !a.type).length == 0) {
           this.jsonForm.get("json").setErrors(undefined);
@@ -68,7 +69,13 @@ export class JsonInputComponent implements OnInit {
           }
           this.jsonForm.get("json").setErrors({ notSchema: true });
         }
+        console.log(invalidValues.length);
+
+        if (!invalidValues.length) {
+          this.onSubmit();
+        }
       }
+
     });
     this.jsonForm.patchValue({
       json: this.defaultData
